@@ -16,8 +16,8 @@ class OpenFoodFacts:
     def init_categories(self, category_names):
         categories = []
         category_controller = CategoryController()
-        for category in category_names:
-            categories.append(Category(category))
+        for name in category_names:
+            categories.append(Category(None, name))
         category_controller.set(categories)
         return category_controller.get()
 
@@ -25,6 +25,5 @@ class OpenFoodFacts:
         product_controller = ProductController()
         for category in self.categories:
             print(category.category_id, category.name, '...')
-            products = product_controller.api_get_products(
-                category, settings.MAX_PRODUCTS)
-            print(products[0])
+            api_products = product_controller.api_get(category.name,
+                                                      settings.MAX_PRODUCTS)
