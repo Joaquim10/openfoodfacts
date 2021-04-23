@@ -4,7 +4,6 @@
 import config.db_config as db_config
 from database.database import Database
 from api.off import OFF
-from models.product import Product
 
 
 class ProductController:

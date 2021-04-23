@@ -3,6 +3,6 @@
 
 class Category:
 
-    def __init__(self, category_id, name):
+    def __init__(self, name, category_id=None):
         self.category_id = category_id
         self.name = name
