@@ -8,7 +8,7 @@ from database.database import Database
 class CategoryController:
 
     def __init__(self):
-        self.database = Database(db_config.SERVER_CONNECTION)
+        self.database = Database(db_config.CONNECTION)
 
     def get(self):
         return self.database.get_categories()
