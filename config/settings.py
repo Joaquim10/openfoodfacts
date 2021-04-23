@@ -2,12 +2,12 @@
 # -*- coding: UTF-8 -*-
 
 CATEGORIES = [
-    "Légumes et dérivés",
-    "Plats à base de riz",
-    "Viandes",
-    "Fromages",
-    "Desserts",
-    "Petit-déjeuners"
+    'Légumes et dérivés',
+    'Plats à base de riz',
+    'Viandes',
+    'Fromages',
+    'Desserts',
+    'Petit-déjeuners'
 ]
 
 MAX_PRODUCTS = 50

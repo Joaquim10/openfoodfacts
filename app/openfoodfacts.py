@@ -3,6 +3,7 @@
 
 import config.settings as settings
 from controllers.category_controller import CategoryController
+from controllers.product_controller import ProductController
 
 
 class OpenFoodFacts:
@@ -16,5 +17,10 @@ class OpenFoodFacts:
         return category_controller.get()
 
     def run(self):
+
         for category in self.categories:
-            print(category.category_id, category.name)  # Test
+            product_controller = ProductController()
+            print(category.category_id, category.name, '...')
+            products = product_controller.api_get_products(
+                category, settings.MAX_PRODUCTS)
+            print(products[0])
