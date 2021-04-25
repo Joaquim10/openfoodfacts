@@ -2,8 +2,6 @@
 # -*- coding: UTF-8 -*-
 
 import config.settings as settings
-from models.category import Category
-from models.product import Product
 from controllers.category_controller import CategoryController
 from controllers.product_controller import ProductController
 
@@ -11,19 +9,29 @@ from controllers.product_controller import ProductController
 class OpenFoodFacts:
 
     def __init__(self):
-        self.categories = self.init_categories(settings.CATEGORIES)
+        pass
 
-    def init_categories(self, category_names):
-        categories = []
+    @staticmethod
+    def get_categories():
         category_controller = CategoryController()
-        for name in category_names:
-            categories.append(Category(None, name))
-        category_controller.set(categories)
         return category_controller.get()
 
-    def run(self):
+    @staticmethod
+    def set_categories(categories):
+        category_controller = CategoryController()
+        category_controller.set(categories)
+
+    def set_products(self, categories):
+        products = []
         product_controller = ProductController()
-        for category in self.categories:
-            print(category.category_id, category.name, '...')
-            api_products = product_controller.api_get(category.name,
-                                                      settings.MAX_PRODUCTS)
+        categories = self.get_categories()
+        for category in categories:
+            api_products = (product_controller.api_get(
+                category, settings.MAX_PRODUCTS))
+            for product in api_products:
+                products.append(product)
+        product_controller.set(products)
+
+    def run(self):
+        self.set_categories(settings.CATEGORIES)
+        self.set_products(self.get_categories())
