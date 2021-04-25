@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
 
+import os
 import mysql.connector as connector
-
 import config.db_config as db_config
 from models.category import Category
 
@@ -11,6 +11,23 @@ class Database:
 
     def __init__(self):
         self.connection_config = db_config.CONNECTION
+
+    def reset_tables(self):
+        directory = os.path.dirname(__file__)
+        sql_file = os.path.join(directory, 'openfoodfacts.sql')
+        password = '--password'
+        if self.connection_config['password'] != '':
+            password = [password, self.connection_config['password']]
+            password = '='.join(password)
+        command = [
+            'mysql --host=', self.connection_config['host'],
+            ' --port=', self.connection_config['port'],
+            ' --user=', self.connection_config['user'],
+            ' ', password,
+            ' < ', sql_file
+        ]
+        command = ''.join(command)
+        os.system(command)
 
     def get_categories(self):
         categories = []
