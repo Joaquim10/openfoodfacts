@@ -7,8 +7,10 @@ class MessageView:
         caption = 'Pur Beurre - Powered by Open Food Facts !'
         self.caption(caption)
 
-    def caption(self, caption):
-        print ('\n', caption)
+    @staticmethod
+    def caption(caption):
+        print('\n', caption)
 
-    def message(self, message):
-        print (message)
+    @staticmethod
+    def message(message):
+        print(message)
