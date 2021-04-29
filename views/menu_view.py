@@ -7,14 +7,14 @@ class MenuView:
         pass
 
     @staticmethod
-    def main_menu():
+    def display():
         main_menu = [
             '1 - Remplacer un aliment...',
             '2 - Voir mes aliments substitués',
             '9 - Réinitialiser la base de données',
             '0 - Quitter'
         ]
-        prompt = 'Quelle option choisissez-vous ?'
+        prompt = 'Selectionnez une option : '
         for menu in main_menu:
             print('    {}'.format(menu))
         return prompt

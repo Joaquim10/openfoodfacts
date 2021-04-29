@@ -10,14 +10,12 @@ class MenuController:
         pass
 
     @staticmethod
-    def main_menu():
+    def display():
         menu_view = MenuView()
-        return menu_view.main_menu()
+        return menu_view.display()
 
     @staticmethod
-    def prompt(prompt, keys):
-        print(prompt)
-        prompt = '>>> '
+    def select(prompt, keys):
         key = ''
         while key == '' or key not in keys:
             key = input(prompt)

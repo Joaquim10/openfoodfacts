@@ -14,7 +14,6 @@ class OpenFoodFacts:
     def __init__(self):
         self.run()
 
-
     @staticmethod
     def get_categories():
         category_controller = CategoryController()
@@ -43,16 +42,19 @@ class OpenFoodFacts:
         self.set_products()
 
     def run(self):
-        message_controller = MessageController()
         menu_controller = MenuController()
-        prompt = menu_controller.main_menu()
-        keys = '1290'
+        message_controller = MessageController()
         key = ''
         while key != '0':
-            key = menu_controller.prompt(prompt, keys)
-            if key == '9':
+            prompt = menu_controller.display()
+            keys = '1290'
+            key = menu_controller.select(prompt, keys)
+            if key == '1':
+                pass
+            elif key == '2':
+                pass
+            elif key == '9':
                 message = 'Réinitialisation de la base de données en cours...'
                 message_controller.message(message)
                 self.reset_database()
             message_controller.message('')
-            prompt = menu_controller.main_menu()
