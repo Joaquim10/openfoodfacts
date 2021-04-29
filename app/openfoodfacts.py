@@ -5,6 +5,7 @@ import config.settings as settings
 from controllers.category_controller import CategoryController
 from controllers.product_controller import ProductController
 from controllers.menu_controller import MenuController
+from controllers.message_controller import MessageController
 from database.database import Database
 
 
@@ -24,7 +25,7 @@ class OpenFoodFacts:
         category_controller = CategoryController()
         category_controller.set(categories)
 
-    def set_products(self, categories):
+    def set_products(self):
         products = []
         product_controller = ProductController()
         categories = self.get_categories()
@@ -39,15 +40,19 @@ class OpenFoodFacts:
         database = Database()
         database.reset_tables()
         self.set_categories(settings.CATEGORIES)
-        self.set_products(self.get_categories())
+        self.set_products()
 
     def run(self):
+        message_controller = MessageController()
         menu_controller = MenuController()
-        menu_controller.title()
         prompt = menu_controller.main_menu()
-        command = ''
-        while command != '0':
-            command = menu_controller.prompt(prompt)
-            if command == '9':
+        keys = '1290'
+        key = ''
+        while key != '0':
+            key = menu_controller.prompt(prompt, keys)
+            if key == '9':
+                message = 'Réinitialisation de la base de données en cours...'
+                message_controller.message(message)
                 self.reset_database()
-                prompt = menu_controller.main_menu()
+            message_controller.message('')
+            prompt = menu_controller.main_menu()
