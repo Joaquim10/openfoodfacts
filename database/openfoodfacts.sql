@@ -70,30 +70,6 @@ CREATE TABLE IF NOT EXISTS `openfoodfacts`.`Substitute` (
 ENGINE = InnoDB;
 
 
--- -----------------------------------------------------
--- Table `openfoodfacts`.`Product_Substitute`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `openfoodfacts`.`Product_Substitute` ;
-
-CREATE TABLE IF NOT EXISTS `openfoodfacts`.`Product_Substitute` (
-  `product_id` INT UNSIGNED NOT NULL,
-  `substitute_id` INT UNSIGNED NULL,
-  PRIMARY KEY (`product_id`, `substitute_id`),
-  INDEX `fk_Product_Substitute_Substitute1_idx` (`substitute_id` ASC),
-  INDEX `fk_Product_Substitute_Product1_idx` (`product_id` ASC),
-  CONSTRAINT `fk_Product_Substitute_Product1`
-    FOREIGN KEY (`product_id`)
-    REFERENCES `openfoodfacts`.`Product` (`product_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Product_Substitute_Substitute1`
-    FOREIGN KEY (`substitute_id`)
-    REFERENCES `openfoodfacts`.`Substitute` (`substitute_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
