@@ -11,7 +11,8 @@ from database.database import Database
 class OpenFoodFacts:
 
     def __init__(self):
-        pass
+        self.run()
+
 
     @staticmethod
     def get_categories():
