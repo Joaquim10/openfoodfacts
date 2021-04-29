@@ -33,7 +33,8 @@ class Database:
         categories = []
         with connector.connect(**self.connection_config) as connection:
             with connection.cursor() as cursor:
-                query = ("SELECT category_id, name from Category")
+                query = ("SELECT category_id, name from Category "
+                         "ORDER BY category_id ASC")
                 cursor.execute(query)
                 for category_id, name in cursor:
                     categories.append(Category(category_id, name))
