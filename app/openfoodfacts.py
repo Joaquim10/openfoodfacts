@@ -24,6 +24,11 @@ class OpenFoodFacts:
         category_controller = CategoryController()
         category_controller.set(categories)
 
+    @staticmethod
+    def get_products(category):
+        product_controller = ProductController()
+        return product_controller.get(category)
+
     def set_products(self):
         products = []
         product_controller = ProductController()
@@ -56,6 +61,25 @@ class OpenFoodFacts:
                 break
         return selected_category
 
+    def select_product(self, category):
+        selected_product = None
+        commands = []
+        product_controller = ProductController()
+        products = self.get_products(category)
+        prompt = product_controller.display(products)
+        for product in products:
+            commands.append(str(product.product_id))
+        product_id = int(product_controller.select(prompt, commands))
+        for product in products:
+            if product_id == product.product_id:
+                selected_product = product
+                break
+        return selected_product
+
+    def display(self, product, category):
+        product_controller = ProductController()
+        product_controller.display_detailed(product, category)
+
     def run(self):
         menu_controller = MenuController()
         message_controller = MessageController()
@@ -66,7 +90,8 @@ class OpenFoodFacts:
             key = menu_controller.select(prompt, keys)
             if key == '1':
                 category = self.select_category()
-                print(category.category_id, category.name)
+                product = self.select_product(category)
+                self.display(product, category)
             elif key == '2':
                 pass
             elif key == '9':

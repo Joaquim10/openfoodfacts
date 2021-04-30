@@ -59,6 +59,32 @@ class Database:
                         cursor.execute(query, data)
             connection.commit()
 
+    def get_products(self, category):
+        products = []
+        with connector.connect(**self.connection_config) as connection:
+            with connection.cursor() as cursor:
+                query = ("SELECT product_id, name, category_id, "
+                         "description, nutri_score, stores, url "
+                         "FROM Product "
+                         "WHERE category_id = %s "
+                         "ORDER BY product_id ASC")
+                data = (category.category_id, )
+                cursor.execute(query, data)
+                for (product_id, name, category_id, description,
+                     nutri_score, stores, url) in cursor:
+                    product = {
+                        'product_id': product_id,
+                        'name': name,
+                        'category_id': category_id,
+                        'description': description,
+                        'nutri_score': nutri_score,
+                        'stores': stores,
+                        'url': url
+                    }
+                    products.append(Product(product))
+            connection.commit()
+        return products
+
     def set_products(self, products):
         with connector.connect(**self.connection_config) as connection:
             for product in products:
