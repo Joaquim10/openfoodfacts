@@ -40,6 +40,12 @@ class OpenFoodFacts:
                 products.append(product)
         product_controller.set(products)
 
+    @staticmethod
+    def get_substitutes(product):
+        product_controller = ProductController()
+        return product_controller.get_substitutes(
+            product, settings.MAX_SUBSTITUTES)
+
     def reset_database(self):
         database = Database()
         database.reset_tables()
@@ -66,7 +72,7 @@ class OpenFoodFacts:
         commands = []
         product_controller = ProductController()
         products = self.get_products(category)
-        prompt = product_controller.display(products)
+        prompt = product_controller.display_list(products)
         for product in products:
             commands.append(str(product.product_id))
         product_id = int(product_controller.select(prompt, commands))
@@ -76,9 +82,31 @@ class OpenFoodFacts:
                 break
         return selected_product
 
-    def display(self, product, category):
+    def select_substitute(self, product):
+        selected_product = None
+        commands = []
         product_controller = ProductController()
-        product_controller.display_detailed(product, category)
+        products = self.get_substitutes(product)
+        if products:
+            prompt = product_controller.display_products(products)
+            for substitute in products:
+                commands.append(str(substitute.product_id))
+            product_id = int(product_controller.select(prompt, commands))
+            for substitute in products:
+                if product_id == substitute.product_id:
+                    selected_product = substitute
+                    break
+        return selected_product
+
+    @staticmethod
+    def display_substitute(product, substitute):
+        product_controller = ProductController()
+        product_controller.display_substitute(product, substitute)
+
+    @staticmethod
+    def display(product):
+        product_controller = ProductController()
+        product_controller.display_product(product)
 
     def run(self):
         menu_controller = MenuController()
@@ -91,7 +119,8 @@ class OpenFoodFacts:
             if key == '1':
                 category = self.select_category()
                 product = self.select_product(category)
-                self.display(product, category)
+                substitute = self.select_substitute(product)
+                self.display_substitute(product, substitute)
             elif key == '2':
                 pass
             elif key == '9':

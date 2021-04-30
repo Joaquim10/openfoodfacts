@@ -103,3 +103,30 @@ class Database:
                     ]
                     cursor.execute(query, data)
             connection.commit()
+
+    def get_substitutes(self, product, max_products):
+        products = []
+        with connector.connect(**self.connection_config) as connection:
+            with connection.cursor() as cursor:
+                query = ("SELECT product_id, name, category_id, "
+                         "description, nutri_score, stores, url "
+                         "FROM Product "
+                         "WHERE category_id = %s AND nutri_score < %s"
+                         "ORDER BY nutri_score ASC "
+                         "LIMIT %s OFFSET 0")
+                data = [product.category_id, product.nutri_score, max_products]
+                cursor.execute(query, data)
+                for (product_id, name, category_id, description,
+                     nutri_score, stores, url) in cursor:
+                    product = {
+                        'product_id': product_id,
+                        'name': name,
+                        'category_id': category_id,
+                        'description': description,
+                        'nutri_score': nutri_score,
+                        'stores': stores,
+                        'url': url
+                    }
+                    products.append(Product(product))
+            connection.commit()
+        return products

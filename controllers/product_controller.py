@@ -27,14 +27,29 @@ class ProductController:
         database.set_products(products)
 
     @staticmethod
-    def display(products):
-        product_view = ProductView()
-        return product_view.display(products)
+    def get_substitutes(product, max_products):
+        database = Database()
+        return database.get_substitutes(product, max_products)
 
     @staticmethod
-    def display_detailed(product, category):
+    def display_product(product):
         product_view = ProductView()
-        product_view.display_detailed(product, category)
+        product_view.display_product(product)
+
+    @staticmethod
+    def display_products(products):
+        product_view = ProductView()
+        return product_view.display_products(products)
+
+    @staticmethod
+    def display_list(products):
+        product_view = ProductView()
+        return product_view.display_list(products)
+
+    @staticmethod
+    def display_substitute(product, substitute):
+        product_view = ProductView()
+        return product_view.display_substitute(product, substitute)
 
     @staticmethod
     def select(prompt, products):
