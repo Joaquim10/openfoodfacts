@@ -5,6 +5,7 @@ import os
 import mysql.connector as connector
 import config.db_config as db_config
 from models.category import Category
+from models.product import Product
 
 
 class Database:
@@ -33,7 +34,8 @@ class Database:
         categories = []
         with connector.connect(**self.connection_config) as connection:
             with connection.cursor() as cursor:
-                query = ("SELECT category_id, name from Category "
+                query = ("SELECT category_id, name "
+                         "FROM Category "
                          "ORDER BY category_id ASC")
                 cursor.execute(query)
                 for category_id, name in cursor:
@@ -46,12 +48,14 @@ class Database:
             for category_name in categories:
                 category = Category(None, category_name)
                 with connection.cursor() as cursor:
-                    query = ("SELECT category_id FROM Category "
+                    query = ("SELECT category_id "
+                             "FROM Category "
                              "WHERE name = %s")
                     data = (category.name, )
                     cursor.execute(query, data)
                     if not cursor.fetchall():
-                        query = ("INSERT INTO Category (name) VALUES (%s)")
+                        query = ("INSERT INTO Category (name) "
+                                 "VALUES (%s)")
                         cursor.execute(query, data)
             connection.commit()
 
@@ -59,21 +63,17 @@ class Database:
         with connector.connect(**self.connection_config) as connection:
             for product in products:
                 with connection.cursor() as cursor:
-                    query = ("SELECT product_id FROM Product WHERE name = %s")
-                    data = (product.name, )
+                    query = ("INSERT INTO Product "
+                             "(name, category_id, description, "
+                             "nutri_score, stores, url) "
+                             "VALUES (%s, %s, %s, %s, %s, %s)")
+                    data = [
+                        product.name,
+                        product.category_id,
+                        product.description,
+                        product.nutri_score,
+                        product.stores,
+                        product.url
+                    ]
                     cursor.execute(query, data)
-                    if not cursor.fetchall():
-                        query = ("INSERT INTO Product "
-                                 "(name, category_id, description, "
-                                 "nutri_score, stores, url) "
-                                 "VALUES (%s, %s, %s, %s, %s, %s)")
-                        data = [
-                            product.name,
-                            product.category_id,
-                            product.description,
-                            product.nutri_score,
-                            product.stores,
-                            product.url
-                        ]
-                        cursor.execute(query, data)
             connection.commit()
