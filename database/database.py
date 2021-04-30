@@ -70,8 +70,8 @@ class Database:
                          "ORDER BY product_id ASC")
                 data = (category.category_id, )
                 cursor.execute(query, data)
-                for (product_id, name, category_id, description,
-                     nutri_score, stores, url) in cursor:
+                for product_id, name, category_id, description, \
+                        nutri_score, stores, url in cursor:
                     product = {
                         'product_id': product_id,
                         'name': name,
@@ -116,8 +116,8 @@ class Database:
                          "LIMIT %s OFFSET 0")
                 data = [product.category_id, product.nutri_score, max_products]
                 cursor.execute(query, data)
-                for (product_id, name, category_id, description,
-                     nutri_score, stores, url) in cursor:
+                for product_id, name, category_id, description, \
+                        nutri_score, stores, url in cursor:
                     product = {
                         'product_id': product_id,
                         'name': name,

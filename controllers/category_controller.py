@@ -8,26 +8,21 @@ from views.category_view import CategoryView
 class CategoryController:
 
     def __init__(self):
-        pass
+        self.database = Database()
+        self.category_view = CategoryView()
 
-    @staticmethod
-    def get():
-        database = Database()
-        return database.get_categories()
+    def get(self):
+        return self.database.get_categories()
 
-    @staticmethod
-    def set(categories):
-        database = Database()
-        database.set_categories(categories)
+    def set(self, categories):
+        self.database.set_categories(categories)
 
-    @staticmethod
-    def display(categories):
-        category_view = CategoryView()
-        return category_view.display(categories)
+    def display(self, categories):
+        return self.category_view.display(categories)
 
     @staticmethod
     def select(prompt, categories):
         category = ''
-        while category == '' or category not in categories:
+        while category not in categories or category == '':
             category = input(prompt)
         return category

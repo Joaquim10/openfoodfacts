@@ -42,8 +42,8 @@ class OFF:
                 'url': None
             }
             product = Product(product)
-            if ('product_name_fr' in api_product or
-                    'product_name' in api_product):
+            if 'product_name_fr' in api_product or \
+                    'product_name' in api_product:
                 if api_product['product_name_fr'] != '':
                     product.name = api_product['product_name_fr']
                 elif api_product['product_name'] != '':
@@ -59,7 +59,7 @@ class OFF:
                 product.stores = api_product['stores']
             if 'url' in api_product:
                 if 'https://fr.openfoodfacts.org/produit/' in \
-                                    api_product['url'].lower():
+                                                api_product['url'].lower():
                     product.url = api_product['url']
             if product.name and product.nutri_score and product.url:
                 products.append(product)

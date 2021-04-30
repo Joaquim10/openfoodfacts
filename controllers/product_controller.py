@@ -9,51 +9,38 @@ from views.product_view import ProductView
 class ProductController:
 
     def __init__(self):
-        pass
+        self.database = Database()
+        self.product_view = ProductView()
 
     @staticmethod
     def api_get(category, page_size):
         api = OFF()
         return api.get_products(category, page_size)
 
-    @staticmethod
-    def get(category):
-        database = Database()
-        return database.get_products(category)
+    def get(self, category):
+        return self.database.get_products(category)
 
-    @staticmethod
-    def set(products):
-        database = Database()
-        database.set_products(products)
+    def set(self, products):
+        self.database.set_products(products)
 
-    @staticmethod
-    def get_substitutes(product, max_products):
-        database = Database()
-        return database.get_substitutes(product, max_products)
+    def get_substitutes(self, product, max_products):
+        return self.database.get_substitutes(product, max_products)
 
-    @staticmethod
-    def display_product(product):
-        product_view = ProductView()
-        product_view.display_product(product)
+    def display_product(self, product):
+        self.product_view.display_product(product)
 
-    @staticmethod
-    def display_products(products):
-        product_view = ProductView()
-        return product_view.display_products(products)
+    def display_list(self, products):
+        return self.product_view.display_list(products)
 
-    @staticmethod
-    def display_list(products):
-        product_view = ProductView()
-        return product_view.display_list(products)
+    def display_products(self, products):
+        return self.product_view.display_products(products)
 
-    @staticmethod
-    def display_substitute(product, substitute):
-        product_view = ProductView()
-        return product_view.display_substitute(product, substitute)
+    def display_substitute(self, product, substitute):
+        return self.product_view.display_substitute(product, substitute)
 
     @staticmethod
     def select(prompt, products):
         product = ''
-        while product == '' or product not in products:
+        while product not in products or product == '':
             product = input(prompt)
         return product

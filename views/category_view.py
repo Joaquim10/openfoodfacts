@@ -8,7 +8,7 @@ class CategoryView:
 
     @staticmethod
     def display(categories):
-        prompt = 'Selectionnez une catégorie : '
+        prompt = "Selectionnez une catégorie : "
         for category in categories:
-            print('    {} - {}'.format(category.category_id, category.name))
+            print("{} - {}".format(category.category_id, category.name))
         return prompt

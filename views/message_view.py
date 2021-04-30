@@ -4,13 +4,14 @@
 class MessageView:
 
     def __init__(self):
-        caption = 'Pur Beurre - Powered by Open Food Facts !'
-        self.caption(caption)
+        self.caption()
 
     @staticmethod
-    def caption(caption):
-        print('\n', caption)
+    def caption():
+        caption = "Pur Beurre - Powered by Open Food Facts !"
+        print("\n", caption)
 
     @staticmethod
-    def message(message):
+    def database_reset():
+        message = "Réinitialisation de la base de données en cours..."
         print(message)
