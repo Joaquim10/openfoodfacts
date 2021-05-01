@@ -9,8 +9,11 @@ class MenuController:
     def __init__(self):
         self.menu_view = MenuView()
 
-    def display(self):
-        return self.menu_view.display()
+    def display_main_menu(self):
+        return self.menu_view.display_main_menu()
+
+    def display_save_menu(self):
+        return self.menu_view.display_save_menu()
 
     @staticmethod
     def select(prompt, options):

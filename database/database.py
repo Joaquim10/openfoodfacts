@@ -130,3 +130,20 @@ class Database:
                     products.append(Product(product))
             connection.commit()
         return products
+
+    def set_substitute(self, product, substitute):
+        with connector.connect(**self.connection_config) as connection:
+            with connection.cursor() as cursor:
+                query = ("SELECT product_id "
+                         "FROM Substitute "
+                         "WHERE product_id = %s AND substitute_id = %s")
+                data = [product.product_id, substitute.product_id]
+                cursor.execute(query, data)
+                if not cursor.fetchall():
+                    query = ("INSERT INTO Substitute "
+                             "(product_id, substitute_id) "
+                             "VALUES (%s, %s)")
+                    cursor.execute(query, data)
+            connection.commit()
+
+

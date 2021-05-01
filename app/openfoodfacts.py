@@ -87,22 +87,26 @@ class OpenFoodFacts:
     def display_substitute(self, product, substitute):
         self.product_controller.display_substitute(product, substitute)
 
-    def display(self, product):
-        self.product_controller.display_product(product)
+    def set_substitute(self, product, substitute):
+        self.product_controller.set_substitute(product, substitute)
 
     def run(self):
         menu_controller = MenuController()
         message_controller = MessageController()
         option = ''
         while option != '0':
-            prompt = menu_controller.display()
-            options = '1290'
-            option = menu_controller.select(prompt, options)
+            prompt = menu_controller.display_main_menu()
+            option = menu_controller.select(prompt, '1290')
             if option == '1':
                 category = self.select_category()
                 product = self.select_product(category)
                 substitute = self.select_substitute(product)
                 self.display_substitute(product, substitute)
+                if substitute:
+                    prompt = menu_controller.display_save_menu()
+                    option = menu_controller.select(prompt, '12')
+                    if option == '1':
+                        self.set_substitute(product, substitute)
             elif option == '2':
                 pass
             elif option == '9':

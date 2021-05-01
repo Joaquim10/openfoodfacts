@@ -26,8 +26,8 @@ class ProductController:
     def get_substitutes(self, product, max_products):
         return self.database.get_substitutes(product, max_products)
 
-    def display_product(self, product):
-        self.product_view.display_product(product)
+    def set_substitute(self, product, substitute):
+        self.database.set_substitute(product, substitute)
 
     def display_list(self, products):
         return self.product_view.display_list(products)
