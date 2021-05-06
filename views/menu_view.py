@@ -26,6 +26,6 @@ class MenuView:
     def display_save_menu(self):
         save_menu = [
             "1 - Enregister dans mes aliments substitués",
-            "2 - Revenir au menu principal"
+            "0 - Revenir au menu principal"
         ]
         return self.display_menu(save_menu)

@@ -6,6 +6,7 @@ import mysql.connector as connector
 import config.db_config as db_config
 from models.category import Category
 from models.product import Product
+from models.substitute import Substitute
 
 
 class Database:
@@ -59,6 +60,19 @@ class Database:
                         cursor.execute(query, data)
             connection.commit()
 
+    def get_category(self, category_id):
+        with connector.connect(**self.connection_config) as connection:
+            with connection.cursor() as cursor:
+                query = ("SELECT category_id, name "
+                         "FROM Category "
+                         "WHERE category_id = %s")
+                data = (category_id, )
+                cursor.execute(query, data)
+                category_id, name = cursor.fetchone()
+                category = Category(category_id, name)
+            connection.commit()
+        return category
+
     def get_products(self, category):
         products = []
         with connector.connect(**self.connection_config) as connection:
@@ -104,7 +118,31 @@ class Database:
                     cursor.execute(query, data)
             connection.commit()
 
-    def get_substitutes(self, product, max_products):
+    def get_product(self, product_id):
+        with connector.connect(**self.connection_config) as connection:
+            with connection.cursor() as cursor:
+                query = ("SELECT product_id, name, category_id, "
+                         "description, nutri_score, stores, url "
+                         "FROM Product "
+                         "WHERE product_id = %s")
+                data = (product_id, )
+                cursor.execute(query, data)
+                product_id, name, category_id, description, nutri_score, \
+                    stores, url = cursor.fetchone()
+                product = {
+                    'product_id': product_id,
+                    'name': name,
+                    'category_id': category_id,
+                    'description': description,
+                    'nutri_score': nutri_score,
+                    'stores': stores,
+                    'url': url
+                }
+                product = Product(product)
+            connection.commit()
+        return product
+
+    def get_healthy_products(self, product, max_products):
         products = []
         with connector.connect(**self.connection_config) as connection:
             with connection.cursor() as cursor:
@@ -131,13 +169,26 @@ class Database:
             connection.commit()
         return products
 
-    def set_substitute(self, product, substitute):
+    def get_substitutes(self):
+        substitutes = []
         with connector.connect(**self.connection_config) as connection:
             with connection.cursor() as cursor:
-                query = ("SELECT product_id "
+                query = ("SELECT product_id, substitute_id "
+                         "FROM Substitute "
+                         "ORDER BY product_id ASC, substitute_id ASC")
+                cursor.execute(query)
+                for product_id, substitute_id in cursor:
+                    substitutes.append(Substitute(product_id, substitute_id))
+            connection.commit()
+        return substitutes
+
+    def set_substitute(self, substitute):
+        with connector.connect(**self.connection_config) as connection:
+            with connection.cursor() as cursor:
+                query = ("SELECT substitute_id "
                          "FROM Substitute "
                          "WHERE product_id = %s AND substitute_id = %s")
-                data = [product.product_id, substitute.product_id]
+                data = [substitute.product_id, substitute.substitute_id]
                 cursor.execute(query, data)
                 if not cursor.fetchall():
                     query = ("INSERT INTO Substitute "
@@ -145,5 +196,3 @@ class Database:
                              "VALUES (%s, %s)")
                     cursor.execute(query, data)
             connection.commit()
-
-

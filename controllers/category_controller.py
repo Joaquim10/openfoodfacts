@@ -17,6 +17,9 @@ class CategoryController:
     def set(self, categories):
         self.database.set_categories(categories)
 
+    def get_category(self, category_id):
+        return self.database.get_category(category_id)
+
     def display(self, categories):
         return self.category_view.display(categories)
 
