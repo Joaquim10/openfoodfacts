@@ -1,0 +1,17 @@
+#!/usr/bin/python3
+# -*- coding: UTF-8 -*-
+
+# Default
+# user: 'root'
+# password: ''
+# host: '127.0.0.1'
+# port:	'3306'
+# database: 'openfoodfacts'
+CONNECTION = {
+    'user': [YOUR_USER_NAME_HERE],
+    'password': [YOUR_PASSWORD_HERE],
+    'host': [YOUR_HOST_HERE],
+    'port':	[YOUR_PORT_HERE],
+    'database': [YOUR_DATABASE_HERE],
+    'raise_on_warnings': True
+}
