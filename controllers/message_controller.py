@@ -9,5 +9,5 @@ class MessageController:
     def __init__(self):
         self.message_view = MessageView()
 
-    def database_reset(self):
-        self.message_view.database_reset()
+    def display_database_reset_message(self):
+        self.message_view.display_database_reset_message()

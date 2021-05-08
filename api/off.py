@@ -12,7 +12,7 @@ class OFF:
         pass
 
     @staticmethod
-    def api_get(category, page_size):
+    def _get_products(category, page_size):
         url = 'https://fr.openfoodfacts.org/cgi/search.pl'
         payload = {
             'action': 'process',
@@ -29,7 +29,7 @@ class OFF:
         return request.json().get('products')
 
     @staticmethod
-    def check_integrity(category, api_products):
+    def _check_integrity(category, api_products):
         products = []
         for api_product in api_products:
             product = {
@@ -66,5 +66,5 @@ class OFF:
         return products
 
     def get_products(self, category, page_size):
-        products = self.api_get(category, page_size)
-        return self.check_integrity(category, products)
+        products = self._get_products(category, page_size)
+        return self._check_integrity(category, products)

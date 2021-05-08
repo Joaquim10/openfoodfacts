@@ -7,10 +7,11 @@ class MenuView:
         pass
 
     @staticmethod
-    def display_menu(menu):
-        prompt = "Selectionnez une option : "
+    def _display_menu(menu):
+        print()
         for option in menu:
             print("{}".format(option))
+        prompt = "Selectionnez une option : "
         return prompt
 
     def display_main_menu(self):
@@ -20,12 +21,11 @@ class MenuView:
             "9 - Réinitialiser la base de données",
             "0 - Quitter"
         ]
-        print()
-        return self.display_menu(main_menu)
+        return self._display_menu(main_menu)
 
     def display_save_menu(self):
         save_menu = [
             "1 - Enregister dans mes aliments substitués",
             "0 - Revenir au menu principal"
         ]
-        return self.display_menu(save_menu)
+        return self._display_menu(save_menu)
