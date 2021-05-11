@@ -1,12 +1,25 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
+"""db_config contains the configuration of the database connection"""
 
-# Default
-# user: 'root'
-# password: ''
-# host: '127.0.0.1'
-# port:	'3306'
-# database: 'openfoodfacts'
+# This file must be renamed as db_config.py.
+#
+# Configuration of the database connection.
+# Replace the text and square brackets with your settings in inverted commas.
+# Settings must include user, password, host, port and database.
+# database must be 'openfoodfacts'.
+#
+# For example:
+#
+# CONNECTION = {
+#     'user': 'root',
+#     'password': '',
+#     'host': '127.0.0.1',
+#     'port':	'3306',
+#     'database': 'openfoodfacts',
+#     'raise_on_warnings': True
+# }
+#
 CONNECTION = {
     'user': [YOUR_USER_NAME_HERE],
     'password': [YOUR_PASSWORD_HERE],
