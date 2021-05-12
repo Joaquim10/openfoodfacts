@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
-
-"""The main module starts the app."""
+"""The main module starts the application."""
 
 from app.openfoodfacts import OpenFoodFacts
 

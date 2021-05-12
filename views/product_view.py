@@ -1,13 +1,30 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
+"""
+
+product_view: product_view contains the ProductView class.
+
+Classes:
+    ProductView: The ProductView object processes the product view.
+"""
+
 
 class ProductView:
-
+    """The ProductView object initializes and processes the product view."""
     def __init__(self):
         pass
 
     @staticmethod
     def display_products(products):
+        '''
+        Displays the specified products and returns the prompt.
+
+        Args:
+            product (list [product.Product]): The products.
+
+        Returns:
+            prompt (str): The prompt.
+        '''
         print()
         for product in products:
             print("{} - {}".format(product.product_id, product.name))
@@ -16,6 +33,13 @@ class ProductView:
 
     @staticmethod
     def display_product(product, category):
+        '''
+        Displays the specified product with its category.
+
+        Args:
+            product (product.Product): The product.
+            category (category.Category): The category.
+        '''
         print("Numéro      : {}".format(product.product_id))
         print("Nom         : {}".format(product.name))
         print("Catégorie   : {}".format(category.name))
@@ -26,6 +50,17 @@ class ProductView:
         print("Lien        : {}".format(product.url))
 
     def display_healthy_products(self, products, category):
+        '''
+        Displays the specified products with its category and returns the
+        prompt.
+
+        Args:
+            products (list [product.Product]): The products.
+            category (category.Category): The category.
+
+        Returns:
+            prompt (str): The prompt.
+        '''
         for product in products:
             print()
             self.display_product(product, category)

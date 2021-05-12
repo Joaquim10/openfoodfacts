@@ -1,10 +1,39 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
+"""
+
+product: product contains the Product class.
+
+Classes:
+    Product: The Product object represents a product.
+"""
+
 
 class Product:
+    """
 
-    # def __init__(self, product_id, name, category_id, nutri_score, url
-    #              description=None, stores=None)
+    The Product object represents a product.
+
+    Args:
+        product (dict):
+        The keyword arguments are used to initialize the product.
+            ['product_id'] (int): The product identifier.
+            ['name'] (str): The name.
+            ['category_id'] (int): The category identifier.
+            ['description'] (str): The description (optional).
+            ['nutri_score'] (str): The nutri-score.
+            ['stores'] (str): The stores (optional).
+            ['url'] (str): The url.
+
+    Attributes:
+        product_id (int): The product identifier.
+        name (str): The name.
+        category_id (int): The category identifier.
+        description (str): The description.
+        nutri_score (str): The nutri-score.
+        stores (str): The stores.
+        url (str): The url.
+    """
     def __init__(self, product):
         self.product_id = product['product_id']
         self.name = product['name']

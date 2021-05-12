@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # -*- coding: UTF-8 -*-
-"""settings contains the settings of the application"""
+"""settings contains the settings of the application."""
 
 # Product categories
 # You can change, add and delete the product categories being used here.
@@ -18,6 +18,8 @@ CATEGORIES = [
     'Petit-déjeuners'
 ]
 
+# Maximum number of products per category
 MAX_PRODUCTS = 50
 
+# Maximum number of potential substitutes for replacing a product
 MAX_SUBSTITUTES = 6
