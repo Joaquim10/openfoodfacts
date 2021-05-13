@@ -6,6 +6,11 @@ substitute_view: substitute_view contains the SubstituteView class.
 
 Classes:
     SubstituteView: The SubstituteView object processes the substitute view.
+
+Methods:
+    display_substitute(product, substitute, category):
+        Displays the specified substitute and its substitueted product with
+        its category.
 """
 
 from views.product_view import ProductView
@@ -25,7 +30,7 @@ class SubstituteView:
     def display_substitute(self, product, substitute, category):
         '''
         Displays the specified substitute and its substitueted product with
-        their category.
+        its category.
 
         Args:
             product (product.Product): The product.

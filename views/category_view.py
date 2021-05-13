@@ -6,6 +6,11 @@ category_view: category_view contains the CategoryView class.
 
 Classes:
     CategoryView: The CategoryView object processes the category view.
+
+Methods:
+    display_categories(categories):
+        Displays the specified categories and returns the prompt.
+
 """
 
 

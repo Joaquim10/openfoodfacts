@@ -29,8 +29,8 @@ class MenuController:
     @staticmethod
     def _select_option(prompt, options):
         '''Asks the user for a menu option.'''
-        option = '?'
-        while option not in options:
+        option = ''
+        while option not in options or option == '':
             option = input(prompt)
         return int(option)
 

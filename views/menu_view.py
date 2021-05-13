@@ -6,6 +6,12 @@ menu_view: menu_view contains the MenuView class.
 
 Classes:
     MenuView: The MenuView object processes the menu view.
+
+Methods:
+    display_main_menu():
+        Displays the main menu and returns the prompt.
+    display_save_menu():
+        Displays the save menu and returns the prompt.
 """
 
 

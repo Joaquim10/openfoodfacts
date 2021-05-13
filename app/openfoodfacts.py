@@ -37,12 +37,15 @@ class OpenFoodFacts:
             The product controller.
         substitute_controller (substitute_controller.SubstituteController):
             The substitute controller.
+        message_controller(message_controller)
+            The message controller.
     """
     def __init__(self):
         self.menu_controller = MenuController()
         self.category_controller = CategoryController()
         self.product_controller = ProductController()
         self.substitute_controller = SubstituteController()
+        self.message_controller = MessageController()
         self.run()
 
     def replace_product(self):
@@ -55,17 +58,20 @@ class OpenFoodFacts:
         and a substitute for this product. A save menu is then displayed and
         the user can choose to save the substitute. Finally, the substitute is
         saved if the user has choosen to do so.
-
+        If there is no product or substitute selected, this method ends.
         '''
         category = self.category_controller.select_category()
         product = self.product_controller.select_product(category)
-        substitute = self.product_controller.select_substitute(
-                                                            product, category)
-        self.substitute_controller.display_substitute(
+        if product:
+            substitute = self.product_controller.select_substitute(product,
+                                                                   category)
+            if substitute:
+                self.substitute_controller.display_substitute(
                                                 product, substitute, category)
-        option = self.menu_controller.select_save_option()
-        if option == 1:
-            self.substitute_controller.set_substitute(product, substitute)
+                option = self.menu_controller.select_save_option()
+                if option != 0:
+                    self.substitute_controller.set_substitute(product,
+                                                              substitute)
 
     def display_substitutes(self):
         '''Displays all the subtitutes and their substitued products.'''
@@ -80,11 +86,12 @@ class OpenFoodFacts:
         the database and adds the categories and products to the database.
         '''
         database = Database()
-        message_controller = MessageController()
-        message_controller.display_database_reset_message()
+        self.message_controller.display_database_reset_message()
         database.reset_tables()
+        self.category_controller.set_categories()
         categories = self.category_controller.get_categories()
-        self.product_controller.set_products(categories)
+        products = self.product_controller.get_products(categories)
+        self.product_controller.set_products(products)
 
     def run(self):
         '''
@@ -93,8 +100,8 @@ class OpenFoodFacts:
 
         This method processes the main menu.
         The user can choose to replace a product by a substitute, display all
-        the substitutes and their substitued products and reset the database.
-        A loop is processed until the user chooses to exit the application.
+        the substitutes and their substitued products, reset the database and
+        exit the application.
         '''
         option = -1
         while option != 0:

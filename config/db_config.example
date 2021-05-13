@@ -2,20 +2,20 @@
 # -*- coding: UTF-8 -*-
 """db_config contains the configuration of the database connection."""
 
-    # This file must be renamed as db_config.py.
-#
 # Configuration of the database connection.
-# Replace the text and square brackets with your settings in inverted commas.
-# Settings must include user name, password, host, port and database.
-# database must be 'openfoodfacts'.
+#
+# Rename this file as db_config.py and replace the text and square brackets
+# with your settings in inverted commas.
+# Settings must include user name and database and can include password, host
+# and port.
 #
 # For example:
 #
 # CONNECTION = {
 #     'user': 'root',
-#     'password': '',
+#     'password': 'your_password',
 #     'host': '127.0.0.1',
-#     'port':	'3306',
+#     'port': '3306',
 #     'database': 'openfoodfacts',
 #     'raise_on_warnings': True
 # }
@@ -25,6 +25,6 @@ CONNECTION = {
     'password': [YOUR_PASSWORD_HERE],
     'host': [YOUR_HOST_HERE],
     'port':	[YOUR_PORT_HERE],
-    'database': [YOUR_DATABASE_HERE],
+    'database': 'openfoodfacts',
     'raise_on_warnings': True
 }

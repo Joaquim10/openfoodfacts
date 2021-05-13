@@ -12,13 +12,13 @@ Methods:
         Resets the tables of the database.
     get_categories():
         Gets all the categories.
-    set_categories(categories):
-        Sets the specified categories.
+    set_categories():
+        Sets the categories given the settings.
     get_products(category):
         Gets all the products of the specified category.
     set_products(products):
         Sets the specified products.
-    get_healthy_products(product, max_products):
+    get_healthy_products(product):
         Gets some potential substitutes for the product.
     get_substitutes():
         Gets all the substitutes.
@@ -35,6 +35,7 @@ Methods:
 import os
 import mysql.connector as connector
 import config.db_config as db_config
+import config.settings as settings
 from models.category import Category
 from models.product import Product
 from models.substitute import Substitute
@@ -54,19 +55,26 @@ class Database:
     def reset_tables(self):
         '''Resets the tables of the database.'''
         directory = os.path.dirname(__file__)
-        sql_file = os.path.join(directory, 'openfoodfacts.sql')
-        password = '--password'
-        if self.connection_config['password'] != '':
-            password = [password, self.connection_config['password']]
-            password = '='.join(password)
-        command = [
-            'mysql --host=', self.connection_config['host'],
-            ' --port=', self.connection_config['port'],
-            ' --user=', self.connection_config['user'],
-            ' ', password,
-            ' < ', sql_file
-        ]
-        command = ''.join(command)
+        args = {
+            'user': '',
+            'password': '',
+            'host': '',
+            'port': '',
+            'sql_script': os.path.join(directory, settings.SQL_SCRIPT)
+        }
+        if 'host' in self.connection_config:
+            args['host'] = ' --host={}'.format(self.connection_config['host'])
+        if 'port' in self.connection_config:
+            args['port'] = ' --port={}'.format(self.connection_config['port'])
+        if 'user' in self.connection_config:
+            args['user'] = ' --user={}'.format(self.connection_config['user'])
+        if 'password' in self.connection_config:
+            args['password'] = ' --password={}'.format(
+                                        self.connection_config['password'])
+
+        command = 'mysql{}{}{}{} < {}'.format(args['host'], args['port'],
+                                              args['user'], args['password'],
+                                              args['sql_script'])
         os.system(command)
 
     def get_categories(self):
@@ -89,15 +97,10 @@ class Database:
             connection.commit()
         return categories
 
-    def set_categories(self, categories):
-        '''
-        Sets the specified categories.
-
-        Args:
-            categories (list [category.Category]): The categories.
-        '''
+    def set_categories(self):
+        '''Sets the categories given by the settings.'''
         with connector.connect(**self.connection_config) as connection:
-            for category_name in categories:
+            for category_name in settings.CATEGORIES:
                 category = Category(None, category_name)
                 with connection.cursor() as cursor:
                     query = ("SELECT category_id "
@@ -173,14 +176,16 @@ class Database:
                     cursor.execute(query, data)
             connection.commit()
 
-    def get_healthy_products(self, product, max_products):
+    def get_healthy_products(self, product):
         '''
 
         Gets some potential substitutes for the specified product.
 
+        This method gets a number of potential substitutes for the specified
+        product defined in the settings.
+
             Args:
                 product (product.Product): The product.
-                max_products (int): Maximum number of products.
 
             Returns:
                 products (list [product.Product]): The potential substitutes.
@@ -196,7 +201,7 @@ class Database:
                          "ORDER BY nutri_score ASC "
                          "LIMIT %s OFFSET 0")
                 data = [product.category_id, product.nutri_score,
-                        product.product_id, max_products]
+                        product.product_id, settings.MAX_SUBSTITUTES]
                 cursor.execute(query, data)
                 for product_id, name, category_id, description, \
                         nutri_score, stores, url in cursor:

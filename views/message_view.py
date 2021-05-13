@@ -6,6 +6,10 @@ message_view: message_view contains the MessageView class.
 
 Classes:
     MessageView: The MessageView object processes the message view.
+
+Methods:
+    display_database_reset_message():
+        Displays the database reset message.
 """
 
 

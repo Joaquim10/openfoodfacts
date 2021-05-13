@@ -9,17 +9,20 @@ Classes:
     controller.
 
 Methods:
-    set_products(categories):
-        Sets the products of the specified categories to database.
+    get_products(self, categories):
+        Gets the products of the specified categories from the
+        Open Food Facts API.
+    set_products(products):
+        Sets the products to database.
     select_product(category):
         Gets a product of the specified category from the product menu.
     select_substitute(product, category):
         Gets a substitute for a product from the substitute menu.
 """
 
-import config.settings as settings
 from database.database import Database
 from api.off import OFF
+from models.product import Product
 from views.product_view import ProductView
 
 
@@ -37,22 +40,78 @@ class ProductController:
         self.database = Database()
         self.product_view = ProductView()
 
-    def set_products(self, categories):
+    @staticmethod
+    def _get_product(category, json_product):
+        '''Gets a cleaned product from a product in json format.'''
+        product = {
+            'product_id': None,
+            'name': None,
+            'category_id': category.category_id,
+            'description': '',
+            'nutri_score': None,
+            'stores': '',
+            'url': None
+        }
+        product = Product(product)
+        if 'product_name_fr' in json_product:
+            if json_product['product_name_fr'] != '':
+                product.name = json_product['product_name_fr']
+        elif 'product_name' in json_product:
+            if json_product['product_name'] != '':
+                product.name = json_product['product_name']
+        if 'generic_name_fr' in json_product:
+            product.description = json_product['generic_name_fr']
+        elif 'generic_name' in json_product:
+            product.description = json_product['generic_name']
+        if 'nutrition_grade_fr' in json_product:
+            if json_product['nutrition_grade_fr'] in 'abcdeABCDE':
+                product.nutri_score = json_product['nutrition_grade_fr']
+        if 'stores' in json_product:
+            product.stores = json_product['stores']
+        if 'url' in json_product:
+            url = json_product['url'].lower()
+            if 'https://' in url and '.openfoodfacts.org/' in url:
+                product.url = json_product['url']
+        if not (product.name and product.nutri_score and product.url):
+            product = None
+        return product
+
+    def get_products(self, categories):
         '''
 
-        Sets the products of the specified categories to database.
+        Gets the products of the specified categories from the
+        Open Food Facts API.
 
-        This method gets a page of products from the specified categories from
-        the Open Food Facts API and sets them to the database.
+        This method gets the products of the specified categories from the
+        Open Food Facts API in a json format, then extracts the
+        products from the json format, checks their integrity and returns the
+        cleaned products.
 
             Args:
-                categories (list [category.Category]): The categories.
+                categories (category.Category): The categories.
+
+            Returns:
+                products (list [product.Product]): The products.
         '''
+
         api = OFF()
         products = []
         for category in categories:
-            api_products = api.get_products(category, settings.MAX_PRODUCTS)
-            products.extend(api_products)
+            json_products = api.get_products(category)
+            for json_product in json_products:
+                product = self._get_product(category, json_product)
+                if product:
+                    products.append(product)
+        return products
+
+    def set_products(self, products):
+        '''
+
+        Sets the products to database.
+
+            Args:
+                products (list [product.Products]): The products.
+        '''
         self.database.set_products(products)
 
     @staticmethod
@@ -83,8 +142,11 @@ class ProductController:
                 product (product.Product): The selected product.
         '''
         products = self.database.get_products(category)
-        prompt = self.product_view.display_products(products)
-        return self._select_product(prompt, products)
+        product = None
+        if products:
+            prompt = self.product_view.display_products(products)
+            product = self._select_product(prompt, products)
+        return product
 
     def select_substitute(self, product, category):
         '''
@@ -103,7 +165,10 @@ class ProductController:
             Returns:
                 substitute (product.Product): The selected substitute.
         '''
-        products = self.database.get_healthy_products(product,
-                                                      settings.MAX_SUBSTITUTES)
-        prompt = self.product_view.display_healthy_products(products, category)
-        return self._select_product(prompt, products)
+        products = self.database.get_healthy_products(product)
+        product = None
+        if products:
+            prompt = self.product_view.display_healthy_products(products,
+                                                                category)
+            product = self._select_product(prompt, products)
+        return product

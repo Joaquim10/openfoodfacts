@@ -10,10 +10,10 @@ Classes:
 
 Methods:
     get_categories(): Gets all the categories from the database.
+    set_categories(): Sets the categories to the database.
     select_category(): Gets a category from the category menu.
 """
 
-import config.settings as settings
 from database.database import Database
 from views.category_view import CategoryView
 
@@ -37,15 +37,14 @@ class CategoryController:
 
         Gets all the categories from the database.
 
-        This method gets the categories list from the settings, then sets the
-        categories to the database and finally gets all the categories from
-        the database.
-
             Returns:
                 categories (list [category.Category]): The categories.
         '''
-        self.database.set_categories(settings.CATEGORIES)
         return self.database.get_categories()
+
+    def set_categories(self):
+        '''Sets the categories to the database.'''
+        self.database.set_categories()
 
     @staticmethod
     def _select_category(prompt, categories):

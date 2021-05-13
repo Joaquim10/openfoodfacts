@@ -6,6 +6,15 @@ product_view: product_view contains the ProductView class.
 
 Classes:
     ProductView: The ProductView object processes the product view.
+
+Methods:
+    display_products(products):
+        Displays the specified products and returns the prompt.
+    display_product(product, category):
+        Displays the specified product with their category.
+    display_healthy_products(self, products, category):
+        Displays the specified products with their category and returns the
+        prompt.
 """
 
 
@@ -34,7 +43,7 @@ class ProductView:
     @staticmethod
     def display_product(product, category):
         '''
-        Displays the specified product with its category.
+        Displays the specified product with their category.
 
         Args:
             product (product.Product): The product.
@@ -51,7 +60,7 @@ class ProductView:
 
     def display_healthy_products(self, products, category):
         '''
-        Displays the specified products with its category and returns the
+        Displays the specified products with their category and returns the
         prompt.
 
         Args:
